@@ -1,5 +1,7 @@
 import utils 
 
+CHECK_WORD_DUDEN = False
+
 def read_word_list(file_path: str, word_length: int, encoding: str = "utf-8") -> list:
     # Open the file in read mode
     with open(file_path, "r", encoding=encoding) as file:
@@ -43,12 +45,12 @@ for word_list_file in word_list_files:
         # Skip words that are already in the filtered list
         if wordlist_word_formatted in filtered_words:
             continue
-        
-        # Check if the word is in the Duden
-        in_duden = duden_checker.check_word(wordlist_word)
-        if not in_duden:
-            print(f"{wordlist_word} not in duden")
-            continue
+
+        if CHECK_WORD_DUDEN:
+            # Check if the word is in the Duden
+            if not duden_checker.check_word(wordlist_word):
+                print(f"{wordlist_word} not in duden")
+                continue
         
         filtered_words.append(wordlist_word)
 

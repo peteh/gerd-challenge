@@ -19,3 +19,21 @@ def count_used_alphabet_letters(word):
         if letter in word:
             count += 1
     return count
+
+def count_used_alphabet_letters_without_qxy(word):
+    alphabet = 'abcdefghijklmnoprstuvwz'
+    count = 0
+    for letter in alphabet:
+        if letter in word:
+            count += 1
+    return count
+
+def read_file_lines(file_path):
+    with open(file_path, "r", encoding="utf-8") as file:
+        lines = [line.strip() for line in file.readlines()]
+    return lines
+
+def write_file_lines(file_path, lines):
+    with open(file_path, "w", encoding="utf-8") as file:
+        for line in lines:
+            file.write(line + "\n")
