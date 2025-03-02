@@ -45,7 +45,7 @@ for word_list_file in word_list_files:
             continue
         
         # Check if the word is in the Duden
-        in_duden = duden_checker.check_word(wordlist_word_formatted)
+        in_duden = duden_checker.check_word(wordlist_word)
         if not in_duden:
             print(f"{wordlist_word} not in duden")
             continue
@@ -54,7 +54,7 @@ for word_list_file in word_list_files:
 
 print(len(filtered_words))
 
-output_file_path = "filtered_words.txt"
+output_file_path = "filtered_words_duden.txt"
 
 with open(output_file_path, "w", encoding="utf-8") as output_file:
     for word in filtered_words:
