@@ -1,19 +1,7 @@
-import duden
-class DudenChecker():
-    def __init__(self):
-        self._words = []
-    
-    def check_word(self, word):
-        if word in self._words:
-            return True
-        w = duden.search(word, exact = False)
-        if len(w) > 0:
-            self._words.append(word)
-            return True
-        return False
-    
+import utils
+
 if __name__ == "__main__":
-    duden_checker = DudenChecker()
+    duden_checker = utils.DudenChecker()
     results_file = open("results_duden.txt", "w")
     with open("results.txt", 'r') as file:
         lines = file.readlines()

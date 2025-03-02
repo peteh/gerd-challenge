@@ -11,11 +11,6 @@ def read_word_list(file_path: str, word_length: int, encoding: str = "utf-8") ->
     for line in lines:
         word = (
             line.strip()
-            .lower()
-            .replace("ä", "ae")
-            .replace("ö", "oe")
-            .replace("ü", "ue")
-            .replace("ß", "ss")
         )
         min_alphabet_letters = 5
         if len(word) == word_length and utils.count_used_alphabet_letters(word) >= min_alphabet_letters:
@@ -28,11 +23,34 @@ filtered_words = []
 word_list_files = ["words/winedit/de_neu_utf8.dic", "words/wortliste/wortliste.txt"]
 #word_list_files = ["words/wortliste/wortliste.txt"]
 
+duden_checker = utils.DudenChecker()
 for word_list_file in word_list_files:
     wordlist_words = read_word_list(word_list_file, 5)
+
     for wordlist_word in wordlist_words:
-        if wordlist_word not in filtered_words:
-            filtered_words.append(wordlist_word)
+        # format the word to fit into the 5-letter wordlist
+        wordlist_word_formatted = (wordlist_word.lower()
+            .replace("ä", "ae")
+            .replace("ö", "oe")
+            .replace("ü", "ue")
+            .replace("ß", "ss")
+        )
+        
+        # Skip words that are not 5 letters long
+        if len(wordlist_word_formatted) != 5:
+            continue
+        
+        # Skip words that are already in the filtered list
+        if wordlist_word_formatted in filtered_words:
+            continue
+        
+        # Check if the word is in the Duden
+        in_duden = duden_checker.check_word(wordlist_word_formatted)
+        if not in_duden:
+            print(f"{wordlist_word} not in duden")
+            continue
+        
+        filtered_words.append(wordlist_word)
 
 print(len(filtered_words))
 
