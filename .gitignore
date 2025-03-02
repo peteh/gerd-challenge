@@ -173,3 +173,4 @@ filtered_words.txt
 results.txt
 results_duden.txt
 results_qxy_filtered.txt
+results_after_blacklist.txt
