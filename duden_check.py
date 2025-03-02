@@ -13,6 +13,7 @@ class DudenChecker():
         return False
     
 if __name__ == "__main__":
+    duden_checker = DudenChecker()
     results_file = open("results_duden.txt", "w")
     with open("results.txt", 'r') as file:
         lines = file.readlines()
