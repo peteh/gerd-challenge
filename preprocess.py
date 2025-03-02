@@ -1,4 +1,5 @@
 import utils 
+import json
 
 CHECK_WORD_DUDEN = False
 
@@ -14,22 +15,32 @@ def read_word_list(file_path: str, word_length: int, encoding: str = "utf-8") ->
         word = (
             line.strip()
         )
-        min_alphabet_letters = 5
-        if len(word) == word_length and utils.count_used_alphabet_letters(word) >= min_alphabet_letters:
+        if len(word) == word_length:
             filtered_words.append(word)
 
     return filtered_words
 
+def read_json_list(file_path: str, word_length: int) -> list:
+    with open(file_path, "r", encoding="utf-8") as file:
+        data = json.load(file)
+
+    filtered_words = []
+
+    for word in data:
+        if len(word) == word_length:
+            filtered_words.append(word)
+
+    return filtered_words
 
 filtered_words = []
-word_list_files = ["words/winedit/de_neu_utf8.dic", "words/wortliste/wortliste.txt"]
-#word_list_files = ["words/wortliste/wortliste.txt"]
+word_lists = []
+#word_lists.append(read_word_list("words/winedit/de_neu_utf8.dic", 5)) # this contains a lot of weird words but also stuff like xylem
+word_lists.append(read_word_list("words/wortliste/wortliste.txt", 5))
+word_lists.append(read_json_list("words/german-words-library/German-words-1600000-words-multilines.json", 5))
 
 duden_checker = utils.DudenChecker()
-for word_list_file in word_list_files:
-    wordlist_words = read_word_list(word_list_file, 5)
-
-    for wordlist_word in wordlist_words:
+for wordlist in word_lists:
+    for wordlist_word in wordlist:
         # format the word to fit into the 5-letter wordlist
         wordlist_word_formatted = (wordlist_word.lower()
             .replace("ä", "ae")
@@ -42,6 +53,9 @@ for word_list_file in word_list_files:
         if len(wordlist_word_formatted) != 5:
             continue
         
+        if utils.count_used_alphabet_letters(wordlist_word_formatted) < 5:
+            continue
+        
         # Skip words that are already in the filtered list
         if wordlist_word_formatted in filtered_words:
             continue
@@ -52,11 +66,11 @@ for word_list_file in word_list_files:
                 print(f"{wordlist_word} not in duden")
                 continue
         
-        filtered_words.append(wordlist_word)
+        filtered_words.append(wordlist_word_formatted)
 
 print(len(filtered_words))
 
-output_file_path = "filtered_words_duden.txt"
+output_file_path = "filtered_words.txt"
 
 with open(output_file_path, "w", encoding="utf-8") as output_file:
     for word in filtered_words:
