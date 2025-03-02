@@ -170,3 +170,4 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 filtered_words.txt
+results.txt

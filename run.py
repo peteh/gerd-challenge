@@ -15,6 +15,8 @@ class Combiner():
         r = 5  # Selecting and arranging 5 words
         num_combinations = math.factorial(num_words) // math.factorial(num_words - r)
         num_processed = 0
+        results_file = open("results.txt", "w")
+        
         for word1_index in range(0, num_words):
             word1 = self._words[word1_index]
             for word2_index in range(word1_index+1, num_words):
@@ -42,7 +44,11 @@ class Combiner():
                                 print(f"Processed: {num_processed}/{num_combinations}")
                             alphabet_letters = utils.count_used_alphabet_letters(eval_combined)
                             if alphabet_letters >= 24:
-                                print(f"{word1.upper()} {word2.upper()} {word3.upper()} {word4.upper()} {word5.upper()} ({alphabet_letters})")
+                                line = f"{word1.upper()} {word2.upper()} {word3.upper()} {word4.upper()} {word5.upper()} ({alphabet_letters})\n" 
+                                print(line)
+                                results_file.write(line)
+                                results_file.flush()
+        results_file.close()
 
     def combine2(self, list_1, list_2, minimal_letters):
         num_combinations = len(list_1) * len(list_2)
